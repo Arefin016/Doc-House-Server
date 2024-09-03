@@ -24,6 +24,23 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect()
+
+    const reviewCollection = client.db("Doc-House").collection("reviews")
+    const userCollection = client.db("Doc-House").collection("users")
+
+    //users related api
+    app.post("/users", async (req, res) => {
+      const user = req.body
+      const result = await userCollection.insertOne(user)
+      res.send(result)
+    })
+
+    //get the review
+    app.get("/reviews", async (req, res) => {
+      const result = await reviewCollection.find().toArray()
+      res.send(result)
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 })
     console.log(
